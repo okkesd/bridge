@@ -1,0 +1,6 @@
+node_modules/
+store/tickets.json
+store/messages.json
+store/delivery.json
+plan.md
+.env
