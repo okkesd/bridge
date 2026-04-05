@@ -46,11 +46,7 @@ for (const m of newMessages) {
 // New ticket log entries
 for (const ticket of tickets.tickets) {
   if (ticket.status === "closed") continue;
-  const isParticipant =
-    ticket.created_by === AGENT_ID ||
-    ticket.log.some((e) => e.from === AGENT_ID);
-  if (!isParticipant) continue;
-
+  // Both agents see all non-closed tickets
   const lastSeen = cursor.last_ticket_log_seen[ticket.id] || 0;
   const newEntries = ticket.log.slice(lastSeen).filter((e) => e.from !== AGENT_ID);
   for (const e of newEntries) {

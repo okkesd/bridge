@@ -6,7 +6,6 @@ import { z } from "zod";
 import fs from "fs";
 import path from "path";
 import { fileURLToPath } from "url";
-import os from "os";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const STORE = path.join(__dirname, "store");
@@ -286,11 +285,7 @@ server.tool(
     const ticketUpdates = [];
     for (const ticket of tickets.tickets) {
       if (ticket.status === "closed") continue;
-      // Agent is a participant if they created it or have a log entry
-      const isParticipant =
-        ticket.created_by === AGENT_ID ||
-        ticket.log.some((e) => e.from === AGENT_ID);
-      if (!isParticipant) continue;
+      // Both agents see all non-closed tickets
 
       const lastSeen = cursor.last_ticket_log_seen[ticket.id] || 0;
       const newEntries = ticket.log.slice(lastSeen).filter((e) => e.from !== AGENT_ID);
